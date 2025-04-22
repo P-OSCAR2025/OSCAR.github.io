@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Modelo Astronómico Interactivo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        * {
+         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -17,7 +18,30 @@
             color: #ffffff;
             line-height: 1.6;
             font-size: 16px;
+            position: relative;
         }
+ /* Fondo estelar */
+        .space-background {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+ .star {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
 
         /* Para dispositivos más pequeños */
         @media (max-width: 480px) {
@@ -26,12 +50,17 @@
             }
         }
         
+       /* Header */
         header {
-            background: linear-gradient(135deg, #1e3a8a 0%, #1e3a8a 100%);
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(30, 58, 138, 0.9) 100%);
             padding: 1rem;
             text-align: center;
             position: relative;
-            overflow: hidden;
+            backdrop-filter: blur(5px);
+            margin: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .header-content {
@@ -45,7 +74,7 @@
         .logo-container {
             width: 100px;
             height: 100px;
-            margin-bottom: 1rem;
+            margin: 1rem auto;
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             display: flex;
@@ -53,6 +82,7 @@
             justify-content: center;
             border: 2px solid rgba(255, 215, 0, 0.3);
         }
+
 
         .logo-placeholder {
             font-size: 0.8rem;
@@ -86,11 +116,9 @@
         }
         
         .subtitle {
-            font-size: 1rem;
+            font-size: 1.2rem;
             color: #ffd700;
             margin-bottom: 0.5rem;
-            position: relative;
-            z-index: 1;
         }
 
         @media (min-width: 480px) {
@@ -99,10 +127,11 @@
             }
         }
         
-        main {
+         main {
             padding: 0.75rem;
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
         }
 
         @media (min-width: 768px) {
@@ -242,13 +271,103 @@
             border: none;
         }
         
-        .season-guide {
-            background-color: #233567;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-top: 1rem;
-        }
+       .season-guide {
+        background: rgba(35, 53, 103, 0.9);
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
+    .guide-grid {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: 1fr;
+        margin-top: 1rem;
+    }
+
+    .guide-section {
+        background: rgba(28, 41, 81, 0.6);
+        border-radius: 8px;
+        padding: 1.5rem;
+        transition: transform 0.3s ease;
+    }
+
+    .guide-section:hover {
+        transform: translateY(-3px);
+    }
+ .guide-section h4 {
+        color: #ffd700;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.1rem;
+    }
+
+    .guide-section h4 i {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 215, 0, 0.1);
+        border-radius: 50%;
+        padding: 0.5rem;
+    }
+.guide-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .guide-list li {
+        padding: 0.75rem 0;
+        display: flex;
+        align-items: start;
+        gap: 0.75rem;
+        border-bottom: 1px solid rgba(58, 93, 168, 0.3);
+    }
+
+    .guide-list li:last-child {
+        border-bottom: none;
+    }
+
+    .guide-list li::before {
+        content: "▹";
+        color: #ffd700;
+        margin-top: 0.2rem;
+    }
+  .guide-tips {
+        background: rgba(255, 215, 0, 0.1);
+        border-left: 3px solid #ffd700;
+        padding: 1.25rem;
+        border-radius: 6px;
+        margin-top: 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .guide-tips::before {
+        content: "💡";
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.1;
+        font-size: 2.5rem;
+    }
+
+    @media (min-width: 768px) {
+        .guide-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .guide-section h4 {
+            font-size: 1.2rem;
+        }
+    }
         @media (min-width: 768px) {
             .season-guide {
                 padding: 1.5rem;
@@ -515,7 +634,6 @@
             }
         }
 
-        /* Estilos para el botón de móvil */
         .mobile-button {
             display: none;
             margin: 1rem auto;
@@ -550,20 +668,108 @@
                 display: none;
             }
         }
+
+        /* Modelo de Tierra */
+        .earth-model {
+            width: 150px;
+            height: 150px;
+            margin: 2rem auto;
+            position: relative;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #2a5c8a 0%, #1a3a5a 100%);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            transition: transform 0.5s ease;
+        }
+
+        .earth-axis {
+            position: absolute;
+            width: 2px;
+            height: 130%;
+            background: #ffd700;
+            left: 50%;
+            top: -15%;
+            transform-origin: center;
+        }
+
+        .earth-model::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .credits {
+            text-align: right;
+            font-size: 0.8em;
+            color: #7cb9ff;
+            margin-top: 0.5rem;
+            opacity: 0.7;
+            padding-right: 0.5rem;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            z-index: 1;
+        }
+
+footer {
+        padding: 2rem 1rem;
+        position: relative;
+        text-align: center;
+    }
+
+    .footer-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .footer-logo-container {
+        width: 100px;
+        height: 100px;
+        
+        display: flex;
+        align-items: center;
+        justify-content: center;
+       
+    }
+
+
+   .footer-logo-container img {
+        max-width: 70%;
+        max-height: 70%;
+    }
+
+    .university-info {
+        order: 2;
+    }
+
+    .university-info p:first-child {
+        margin-bottom: 0.5rem;
+    }
+
+    .university-info p:last-child {
+        margin-top: 1rem;
+        color: #ffd700;
+        font-size: 0.9rem;
+    }
     </style>
 </head>
 <body>
-    <header>
-        <div class="stars" id="stars"></div>
-        <div class="header-content">
-            <div class="logo-container">
-    <img src="LogoUmes.png" alt="Logo de la Universidad" style="max-width: 100%; max-height: 100%;">
-</div>
-
-            </div>
-            <h1 class="title">MODELO ASTRONÓMICO INTERACTIVO</h1>
-            <p class="subtitle">Explora las estaciones de la Tierra: Inclinación, Rotación y Traslación</p>
+ <div class="space-background" id="space-background"></div>
+    
+   <header>
+        <div class="logo-container">
+            <img src="LogoUmes.png" alt="Logo de la Universidad" style="max-width: 100%; max-height: 100%;">
         </div>
+        <h1 class="title">MODELO ASTRONÓMICO INTERACTIVO</h1>
+        <p class="subtitle">Explora las estaciones de la Tierra: Inclinación, Rotación y Traslación</p>
     </header>
     
     <main>
@@ -600,21 +806,21 @@
             
             <div class="iframe-container">
                 <iframe class="responsive-iframe" src="https://www.earthspacelab.com/app/seasons/es" allowfullscreen></iframe>
+                <div class="credits">Simulación por Earth Space Lab</div>
             </div>
             
             <a href="https://www.earthspacelab.com/app/seasons/es" class="mobile-button" target="_blank">Abrir Simulación Interactiva</a>
             
-            <div class="season-guide">
-                <h3>Guía para usar la simulación</h3>
-                <p>Esta simulación interactiva de Earth Space Lab te permite:</p>
-                <ul>
-                    <li>Ver la posición de la Tierra en diferentes momentos del año</li>
-                    <li>Observar cómo los rayos solares inciden en distintas partes del planeta</li>
-                    <li>Comprender cómo la inclinación del eje terrestre afecta a la distribución de luz solar</li>
-                    <li>Visualizar la relación entre las estaciones y la posición orbital de la Tierra</li>
-                </ul>
-                <p class="season-guide-tips">Prueba a cambiar entre las distintas vistas y utiliza los controles de avance para ver el movimiento de la Tierra a lo largo del año.</p>
-            </div>
+            <div class="guide-grid">
+        <div class="guide-section">
+            <h4><i class="fas fa-gamepad"></i>Funcionalidades principales</h4>
+            <ul class="guide-list">
+                <li>Controla la velocidad con los botones de reproducción</li>
+                <li>Cambia entre vistas con los íconos de cámara</li>
+                <li>Haz clic y arrastra para rotar la perspectiva</li>
+                <li>Usa la rueda del mouse para hacer zoom</li>
+            </ul>
+        </div>
         </section>
         
         <section class="section">
@@ -622,6 +828,9 @@
             <p>¿Qué pasaría si la inclinación de la Tierra fuera diferente? Desliza el control para cambiar la inclinación y observa cómo afectaría a las estaciones:</p>
             
             <div class="tilt-container">
+                <div class="earth-model" id="earth-model">
+                    <div class="earth-axis"></div>
+                </div>
                 <input type="range" min="0" max="45" value="23.5" class="tilt-slider" id="tilt-slider">
                 <div id="tilt-value">Inclinación actual: 23.5°</div>
                 <p id="tilt-effect">Con una inclinación de 23.5°, la Tierra experimenta las cuatro estaciones bien definidas en las zonas templadas, mientras que las zonas polares tienen períodos extendidos de luz y oscuridad.</p>
@@ -714,8 +923,16 @@
     </main>
     
     <footer>
-        <p>Modelo Astronómico Interactivo - Proyecto Educativo sobre las Estaciones de la Tierra</p>
-        <p>Aprendiendo sobre la inclinación, rotación y traslación de nuestro planeta</p>
+      <div class="footer-content">
+        <div class="footer-logo-container">
+            <img src="LogoUmes.png" alt="Logo Universidad">
+        </div>
+        <div class="university-info">
+    <p>UNIVERSIDAD MESOAMERICANA 2025</p>
+            <p>Modelo Astronómico Interactivo - Proyecto OSCAR</p>
+            <p>"Mira a las estrellas porque estas reflejan nuestro conocimiento más profundo"</p>
+        </div>
+    </div>
     </footer>
 
     <script>
@@ -750,10 +967,12 @@
         const tiltSlider = document.getElementById('tilt-slider');
         const tiltValue = document.getElementById('tilt-value');
         const tiltEffect = document.getElementById('tilt-effect');
+        const earthModel = document.getElementById('earth-model');
         
         function updateTilt() {
             const tilt = tiltSlider.value;
             tiltValue.textContent = `Inclinación actual: ${tilt}°`;
+            earthModel.style.transform = `rotateZ(${tilt}deg)`;
             
             if (tilt < 5) {
                 tiltEffect.textContent = 'Con muy poca inclinación, casi no habría estaciones. Las temperaturas serían bastante constantes durante todo el año.';
@@ -831,6 +1050,45 @@
             // Ejecutar al cargar y cuando cambie el tamaño de la pantalla
             adjustForMobile();
             window.addEventListener('resize', adjustForMobile);
+        });
+    </script>
+    <script>
+        // Generador de estrellas
+        function createStars() {
+            const container = document.getElementById('space-background');
+            const starCount = 200; // Ajustar según necesidad
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // Posición aleatoria
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                
+                // Tamaño aleatorio entre 1-3px
+                const size = Math.random() * 2 + 1;
+                
+                // Duración de animación aleatoria
+                const duration = Math.random() * 3 + 1;
+                
+                star.style.cssText = `
+                    left: ${x}%;
+                    top: ${y}%;
+                    width: ${size}px;
+                    height: ${size}px;
+                    animation-duration: ${duration}s;
+                    --duration: ${duration}s;
+                `;
+                
+                container.appendChild(star);
+            }
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            // Resto del código de inicialización...
         });
     </script>
 </body>
