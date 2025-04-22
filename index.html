@@ -514,6 +514,42 @@
                 font-size: 1rem;
             }
         }
+
+        /* Estilos para el botón de móvil */
+        .mobile-button {
+            display: none;
+            margin: 1rem auto;
+            padding: 1rem 2rem;
+            background-color: #4a6db8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .mobile-button:hover {
+            background-color: #5a7dc8;
+        }
+
+        @media (max-width: 767px) {
+            .iframe-container {
+                display: none;
+            }
+            
+            .mobile-button {
+                display: block;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .mobile-button {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -565,6 +601,8 @@
             <div class="iframe-container">
                 <iframe class="responsive-iframe" src="https://www.earthspacelab.com/app/seasons/es" allowfullscreen></iframe>
             </div>
+            
+            <a href="https://www.earthspacelab.com/app/seasons/es" class="mobile-button" target="_blank">Abrir Simulación Interactiva</a>
             
             <div class="season-guide">
                 <h3>Guía para usar la simulación</h3>
