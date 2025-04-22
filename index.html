@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo Astronómico Interactivo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0a1128;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e3a8a 100%);
+            padding: 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        .title {
+            font-size: 1.8rem;
+            margin: 1rem 0;
+            color: #ffffff;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #ffd700;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        main {
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section {
+            background-color: #1c2951;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: #ffd700;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #3a5da8;
+            padding-bottom: 0.5rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        @media (min-width: 768px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .card {
+            background-color: #233567;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h3 {
+            color: #ffd700;
+            margin-bottom: 1rem;
+        }
+        
+        .simulation-container {
+            width: 100%;
+            margin: 2rem auto;
+            text-align: center;
+        }
+        
+        .iframe-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 75%; /* 4:3 Aspect Ratio */
+            margin: 1.5rem auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .responsive-iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .season-guide {
+            background-color: #233567;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .season-guide h3 {
+            color: #ffd700;
+            margin-bottom: 1rem;
+        }
+        
+        .season-guide-tips {
+            margin-top: 1rem;
+            font-style: italic;
+            color: #aabcf1;
+        }
+        
+        .controls {
+            margin: 1rem auto;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background-color: #3a5da8;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #4a6db8;
+        }
+        
+        .tilt-container {
+            margin: 2rem auto;
+            text-align: center;
+        }
+        
+        .tilt-slider {
+            width: 100%;
+            max-width: 300px;
+            margin: 1rem auto;
+        }
+        
+        #tilt-value {
+            margin-top: 0.5rem;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .resource {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #3a5da8;
+        }
+        
+        footer {
+            background-color: #0c1938;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 2rem;
+        }
+        
+        .quiz-container {
+            background-color: #233567;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .quiz-question {
+            margin-bottom: 1.5rem;
+        }
+        
+        .quiz-options {
+            display: grid;
+            gap: 0.5rem;
+        }
+        
+        .quiz-option {
+            background-color: #1c2951;
+            padding: 0.75rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .quiz-option:hover {
+            background-color: #2a3b68;
+        }
+        
+        .selected {
+            background-color: #3a5da8;
+        }
+        
+        .correct {
+            background-color: #2e7d32;
+        }
+        
+        .incorrect {
+            background-color: #c62828;
+        }
+        
+        #submit-quiz {
+            margin-top: 1rem;
+        }
+        
+        #quiz-result {
+            margin-top: 1rem;
+            font-weight: bold;
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="stars" id="stars"></div>
+        <h1 class="title">MODELO ASTRONÓMICO INTERACTIVO</h1>
+        <p class="subtitle">Explora las estaciones de la Tierra: Inclinación, Rotación y Traslación</p>
+    </header>
+    
+    <main>
+        <section class="section">
+            <h2>¿Qué causa las estaciones?</h2>
+            <p>Las estaciones del año son fenómenos naturales que ocurren debido a tres factores astronómicos fundamentales:</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3>Inclinación del eje terrestre</h3>
+                    <p>La Tierra está inclinada aproximadamente 23.5° respecto a su plano orbital. Esta inclinación hace que diferentes partes del planeta reciban distintas cantidades de luz solar a lo largo del año.</p>
+                </div>
+                
+                <div class="card">
+                    <h3>Rotación</h3>
+                    <p>La Tierra gira sobre su propio eje completando una rotación cada 24 horas, lo que causa el día y la noche. Este movimiento es constante y no cambia con las estaciones.</p>
+                </div>
+                
+                <div class="card">
+                    <h3>Traslación</h3>
+                    <p>La Tierra completa una órbita alrededor del Sol en aproximadamente 365.25 días. Durante este recorrido, debido a la inclinación constante del eje, distintas zonas de la Tierra reciben más o menos luz solar directa.</p>
+                </div>
+                
+                <div class="card">
+                    <h3>¿Por qué hace más calor en verano?</h3>
+                    <p>Durante el verano de un hemisferio, esa parte de la Tierra está inclinada hacia el Sol, recibiendo luz solar más directa y durante más horas del día, aumentando la temperatura.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section simulation-container">
+            <h2>Simulación Interactiva</h2>
+            <p>Explora esta simulación interactiva que muestra cómo la inclinación de la Tierra y su movimiento alrededor del Sol causan las estaciones del año:</p>
+            
+            <div class="iframe-container">
+                <iframe class="responsive-iframe" src="https://www.earthspacelab.com/app/seasons/es" allowfullscreen></iframe>
+            </div>
+            
+            <div class="season-guide">
+                <h3>Guía para usar la simulación</h3>
+                <p>Esta simulación interactiva de Earth Space Lab te permite:</p>
+                <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                    <li>Ver la posición de la Tierra en diferentes momentos del año</li>
+                    <li>Observar cómo los rayos solares inciden en distintas partes del planeta</li>
+                    <li>Comprender cómo la inclinación del eje terrestre afecta a la distribución de luz solar</li>
+                    <li>Visualizar la relación entre las estaciones y la posición orbital de la Tierra</li>
+                </ul>
+                <p class="season-guide-tips">Prueba a cambiar entre las distintas vistas y utiliza los controles de avance para ver el movimiento de la Tierra a lo largo del año.</p>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2>Experimento: Cambio de Inclinación</h2>
+            <p>¿Qué pasaría si la inclinación de la Tierra fuera diferente? Desliza el control para cambiar la inclinación y observa cómo afectaría a las estaciones:</p>
+            
+            <div class="tilt-container">
+                <input type="range" min="0" max="45" value="23.5" class="tilt-slider" id="tilt-slider">
+                <div id="tilt-value">Inclinación actual: 23.5°</div>
+                <p id="tilt-effect">Con una inclinación de 23.5°, la Tierra experimenta las cuatro estaciones bien definidas en las zonas templadas, mientras que las zonas polares tienen períodos extendidos de luz y oscuridad.</p>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2>Datos Curiosos</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Solsticios y Equinoccios</h3>
+                    <p>Los solsticios marcan el día más largo (verano) y más corto (invierno) del año, mientras que en los equinoccios, el día y la noche tienen igual duración en todo el planeta.</p>
+                </div>
+                
+                <div class="card">
+                    <h3>Estaciones Invertidas</h3>
+                    <p>Cuando el Hemisferio Norte está en verano, el Hemisferio Sur está en invierno, y viceversa, debido a la inclinación del eje terrestre.</p>
+                </div>
+                
+                <div class="card">
+                    <h3>Órbita Elíptica</h3>
+                    <p>La órbita de la Tierra es ligeramente elíptica, no circular. Curiosamente, la Tierra está más cerca del Sol (perihelio) durante el invierno del Hemisferio Norte.</p>
+                </div>
+                
+                <div class="card">
+                    <h3>Cambio de Inclinación</h3>
+                    <p>La inclinación del eje terrestre no es completamente fija. Varía entre 22.1° y 24.5° en un ciclo de aproximadamente 41,000 años, afectando levemente las estaciones.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2>Recursos Educativos</h2>
+            <div class="resource">
+                <h3>Las Estaciones a Simple Vista</h3>
+                <p>Un experimento sencillo para entender las estaciones es usar una linterna y un globo terráqueo. Inclina el globo a 23.5° y muévelo alrededor de la linterna para observar cómo cambia la iluminación.</p>
+            </div>
+            
+            <div class="resource">
+                <h3>Videos Recomendados</h3>
+                <p>Encontrarás excelentes visualizaciones del movimiento terrestre y su efecto en las estaciones en canales educativos como National Geographic, NASA Kids y Academias de Ciencias online.</p>
+            </div>
+            
+            <div class="resource">
+                <h3>Artículos Relacionados</h3>
+                <p>Para profundizar más en el tema, te recomendamos buscar artículos sobre "precesión de los equinoccios", "ciclos de Milankovitch" y "cambios históricos en las estaciones".</p>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2>Pon a prueba tus conocimientos</h2>
+            <div class="quiz-container">
+                <div class="quiz-question" id="question-1">
+                    <p>1. ¿Cuál es la inclinación aproximada del eje terrestre?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="false">15.5 grados</div>
+                        <div class="quiz-option" data-correct="true">23.5 grados</div>
+                        <div class="quiz-option" data-correct="false">30 grados</div>
+                        <div class="quiz-option" data-correct="false">45 grados</div>
+                    </div>
+                </div>
+                
+                <div class="quiz-question" id="question-2">
+                    <p>2. ¿Qué ocurre durante un solsticio de verano en el hemisferio norte?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="false">El día y la noche tienen la misma duración</div>
+                        <div class="quiz-option" data-correct="false">La Tierra está más cerca del Sol</div>
+                        <div class="quiz-option" data-correct="true">Es el día más largo del año</div>
+                        <div class="quiz-option" data-correct="false">Es el día más corto del año</div>
+                    </div>
+                </div>
+                
+                <div class="quiz-question" id="question-3">
+                    <p>3. ¿Por qué hace más calor en verano que en invierno?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="false">Porque la Tierra está más cerca del Sol</div>
+                        <div class="quiz-option" data-correct="true">Porque los rayos solares inciden más directamente y durante más horas</div>
+                        <div class="quiz-option" data-correct="false">Porque el Sol produce más energía en esa época</div>
+                        <div class="quiz-option" data-correct="false">Porque la atmósfera es más delgada en verano</div>
+                    </div>
+                </div>
+                
+                <button id="submit-quiz">Comprobar respuestas</button>
+                <div id="quiz-result"></div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>Modelo Astronómico Interactivo - Proyecto Educativo sobre las Estaciones de la Tierra</p>
+        <p>Aprendiendo sobre la inclinación, rotación y traslación de nuestro planeta</p>
+    </footer>
+
+    <script>
+        // Animación de estrellas en el encabezado
+        function createStars() {
+            const stars = document.getElementById('stars');
+            const count = 100;
+            
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                const size = Math.random() * 2;
+                
+                star.style.position = 'absolute';
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.backgroundColor = 'white';
+                star.style.borderRadius = '50%';
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.opacity = Math.random();
+                star.style.animation = `twinkle ${Math.random() * 5 + 3}s infinite alternate`;
+                
+                stars.appendChild(star);
+            }
+        }
+        
+        // Control de inclinación
+        const tiltSlider = document.getElementById('tilt-slider');
+        const tiltValue = document.getElementById('tilt-value');
+        const tiltEffect = document.getElementById('tilt-effect');
+        
+        function updateTilt() {
+            const tilt = tiltSlider.value;
+            tiltValue.textContent = `Inclinación actual: ${tilt}°`;
+            
+            if (tilt < 5) {
+                tiltEffect.textContent = 'Con muy poca inclinación, casi no habría estaciones. Las temperaturas serían bastante constantes durante todo el año.';
+            } else if (tilt < 15) {
+                tiltEffect.textContent = 'Con esta inclinación reducida, las estaciones serían mucho más suaves, con menos diferencia entre verano e invierno.';
+            } else if (tilt < 30) {
+                tiltEffect.textContent = 'Con una inclinación cercana a los 23.5° actuales, tenemos estaciones bien definidas en las zonas templadas y períodos extendidos de luz/oscuridad en las zonas polares.';
+            } else if (tilt < 40) {
+                tiltEffect.textContent = 'Con mayor inclinación, las estaciones serían más extremas, con veranos muy calurosos e inviernos muy fríos.';
+            } else {
+                tiltEffect.textContent = 'Con una inclinación tan pronunciada, las estaciones serían dramáticamente extremas, con posibles períodos de varios meses de oscuridad total en algunas regiones.';
+            }
+        }
+        
+        // Quiz interactivo
+        const quizOptions = document.querySelectorAll('.quiz-option');
+        const submitQuiz = document.getElementById('submit-quiz');
+        const quizResult = document.getElementById('quiz-result');
+        
+        quizOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Deseleccionar otras opciones en la misma pregunta
+                const parent = this.parentElement;
+                parent.querySelectorAll('.quiz-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Seleccionar esta opción
+                this.classList.add('selected');
+            });
+        });
+        
+        function checkQuiz() {
+            let correctAnswers = 0;
+            const questions = document.querySelectorAll('.quiz-question');
+            
+            questions.forEach(question => {
+                const selectedOption = question.querySelector('.selected');
+                if (selectedOption) {
+                    if (selectedOption.getAttribute('data-correct') === 'true') {
+                        selectedOption.classList.add('correct');
+                        correctAnswers++;
+                    } else {
+                        selectedOption.classList.add('incorrect');
+                        // Mostrar la respuesta correcta
+                        question.querySelectorAll('.quiz-option').forEach(opt => {
+                            if (opt.getAttribute('data-correct') === 'true') {
+                                opt.classList.add('correct');
+                            }
+                        });
+                    }
+                }
+            });
+            
+            quizResult.textContent = `Has acertado ${correctAnswers} de ${questions.length} preguntas.`;
+            submitQuiz.disabled = true;
+            submitQuiz.textContent = '¡Completado!';
+        }
+        
+        // Inicializar cuando se cargue la página
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            
+            tiltSlider.addEventListener('input', updateTilt);
+            updateTilt();
+            
+            submitQuiz.addEventListener('click', checkQuiz);
+        });
+    </script>
+</body>
+</html>
