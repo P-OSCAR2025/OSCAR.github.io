@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Modelo Astronómico Interactivo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
     <style>
          * {
             margin: 0;
@@ -759,9 +761,231 @@ footer {
         color: #ffd700;
         font-size: 0.9rem;
     }
+ /* Nuevos estilos para el globo 3D */
+     #globe-container {
+        width: 300px;
+        height: 300px;
+        margin: 2rem auto;
+        perspective: 1000px;
+    }
+
+    canvas {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+
+ /* Estilos para la pantalla de carga */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        .hyperdrive-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            perspective: 1000px;
+        }
+
+        .stars-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            transform: translateZ(-500px);
+            animation: hyperdrive 1.5s infinite linear;
+        }
+
+        .loading-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 2;
+        }
+
+        .loading-logo {
+            width: 200px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+        }
+
+        .loading-text {
+            color: #fff;
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Barra de carga futurista */
+        .progress-container {
+            width: 300px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, 
+                rgba(0, 212, 255, 1) 0%, 
+                rgba(30, 58, 138, 1) 100%);
+            position: relative;
+            transition: width 0.3s ease;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.3) 50%,
+                transparent 100%);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes hyperdrive {
+            0% { transform: translateZ(-1000px); opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateZ(1000px); opacity: 0; }
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+
+        /* Efecto de finalización */
+        .jump-effect {
+            animation: hyperspaceJump 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes hyperspaceJump {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(50); opacity: 0; }
+        }
     </style>
+
 </head>
 <body>
+
+ <div class="loading-screen">
+        <div class="hyperdrive-container">
+            <div class="stars-container" id="stars-container"></div>
+            <div class="loading-content">
+                <img src="LogoUmes.png" alt="Logo Universidad" class="loading-logo">
+                <div class="loading-text">Bienvenido</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+        // Crear estrellas para el efecto hyperdrive
+        function createStars() {
+            const container = document.getElementById('stars-container');
+            const starCount = 150;
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // Posicionamiento aleatorio en 3D
+                const x = Math.random() * 100 - 50 + '%';
+                const y = Math.random() * 100 - 50 + '%';
+                
+                star.style.left = `calc(50% + ${x})`;
+                star.style.top = `calc(50% + ${y})`;
+                star.style.animationDuration = `${Math.random() * 0.5 + 0.8}s`;
+                star.style.animationDelay = `${Math.random() * 1.5}s`;
+                
+                container.appendChild(star);
+            }
+        }
+
+        // Actualizar progreso
+        function updateProgress(percentage) {
+            const progressBar = document.getElementById('progress-bar');
+            progressBar.style.width = percentage + '%';
+            
+            // Agregar partículas aleatorias
+            if (Math.random() < 0.3 && percentage < 100) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.width = '2px';
+                particle.style.height = '100%';
+                particle.style.background = 'rgba(255, 255, 255, 0.5)';
+                particle.style.left = percentage + '%';
+                particle.style.animation = 'particleFade 0.5s forwards';
+                progressBar.appendChild(particle);
+            }
+        }
+
+        // Simular progreso de carga
+        let progress = 0;
+       function simulateLoad() {
+    if (progress < 100) {
+        // Reduce la velocidad de incremento (cambia estos valores)
+        progress += Math.random() * 0.5 + 0.5; // Valores originales: 3 + 1
+        updateProgress(Math.min(progress, 100));
+        requestAnimationFrame(simulateLoad);
+    } else {
+        // Aumenta el tiempo del efecto de salto (800 a 1200ms)
+        document.querySelector('.hyperdrive-container').classList.add('jump-effect');
+        setTimeout(() => {
+            document.querySelector('.loading-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.querySelector('.loading-screen').remove();
+            }, 1000);
+        }, 1200); // Aumentar este valor
+    }
+}
+
+        // Iniciar carga
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            simulateLoad();
+            
+            // Estilo adicional para partículas
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes particleFade {
+                    0% { opacity: 1; transform: translateY(0); }
+                    100% { opacity: 0; transform: translateY(-10px); }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
  <div class="space-background" id="space-background"></div>
     
    <header>
@@ -823,19 +1047,17 @@ footer {
         </div>
         </section>
         
-        <section class="section">
-            <h2>Experimento: Cambio de Inclinación</h2>
-            <p>¿Qué pasaría si la inclinación de la Tierra fuera diferente? Desliza el control para cambiar la inclinación y observa cómo afectaría a las estaciones:</p>
-            
-            <div class="tilt-container">
-                <div class="earth-model" id="earth-model">
-                    <div class="earth-axis"></div>
-                </div>
-                <input type="range" min="0" max="45" value="23.5" class="tilt-slider" id="tilt-slider">
-                <div id="tilt-value">Inclinación actual: 23.5°</div>
-                <p id="tilt-effect">Con una inclinación de 23.5°, la Tierra experimenta las cuatro estaciones bien definidas en las zonas templadas, mientras que las zonas polares tienen períodos extendidos de luz y oscuridad.</p>
-            </div>
-        </section>
+       <section class="section">
+    <h2>Experimento: Cambio de Inclinación</h2>
+    <p>¿Qué pasaría si la inclinación de la Tierra fuera diferente? Desliza el control para cambiar la inclinación y observa cómo afectaría a las estaciones:</p>
+    
+    <div class="tilt-container">
+        <div id="globe-container"></div>
+        <input type="range" min="0" max="45" value="23.5" class="tilt-slider" id="tilt-slider">
+        <div id="tilt-value">Inclinación actual: 23.5°</div>
+        <p id="tilt-effect">Con una inclinación de 23.5°, la Tierra experimenta las cuatro estaciones bien definidas en las zonas templadas, mientras que las zonas polares tienen períodos extendidos de luz y oscuridad.</p>
+    </div>
+</section>
         
         <section class="section">
             <h2>Datos Curiosos</h2>
@@ -930,7 +1152,7 @@ footer {
         <div class="university-info">
     <p>UNIVERSIDAD MESOAMERICANA 2025</p>
             <p>Modelo Astronómico Interactivo - Proyecto OSCAR</p>
-            <p>"Mira a las estrellas porque estas reflejan nuestro conocimiento más profundo"</p>
+            <p>"El espacio es vasto, misterioso e infinito, como nuestro potencial"</p>
         </div>
     </div>
     </footer>
@@ -1091,5 +1313,97 @@ footer {
             // Resto del código de inicialización...
         });
     </script>
+<script>
+    // Configuración del globo 3D
+    let globe, earthAxis; // Hacer variables accesibles globalmente
+
+    function initGlobe() {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+        camera.position.z = 2.5;
+        
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(300, 300);
+        document.getElementById('globe-container').appendChild(renderer.domElement);
+
+        const textureLoader = new THREE.TextureLoader();
+        textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_atmos_2048.jpg', (texture) => {
+            const geometry = new THREE.SphereGeometry(1, 32, 32);
+            const material = new THREE.MeshPhongMaterial({
+                map: texture,
+                bumpScale: 0.05,
+                specular: new THREE.Color('grey'),
+                shininess: 5
+            });
+            
+            globe = new THREE.Mesh(geometry, material);
+            scene.add(globe);
+            
+            const axisGeometry = new THREE.BufferGeometry().setFromPoints([
+                new THREE.Vector3(0, -1.5, 0),
+                new THREE.Vector3(0, 1.5, 0)
+            ]);
+            const axisMaterial = new THREE.LineBasicMaterial({ color: 0xffd700 });
+            earthAxis = new THREE.Line(axisGeometry, axisMaterial);
+            scene.add(earthAxis);
+            
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(5, 3, 5);
+            scene.add(directionalLight);
+            
+            animate();
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            if(globe) globe.rotation.y += 0.002;
+            renderer.render(scene, camera);
+        }
+    }
+
+    // Función única para actualizar todo
+    function updateTilt() {
+        const tilt = tiltSlider.value;
+        
+        // Actualizar texto
+        tiltValue.textContent = `Inclinación actual: ${tilt}°`;
+        
+        // Actualizar modelo 3D
+        if(globe && earthAxis) {
+            globe.rotation.x = THREE.MathUtils.degToRad(tilt);
+            earthAxis.rotation.x = THREE.MathUtils.degToRad(tilt);
+        }
+
+        // Actualizar explicación
+        let effectText;
+        if (tilt < 5) {
+            effectText = 'Con muy poca inclinación, casi no habría estaciones. Las temperaturas serían bastante constantes durante todo el año.';
+        } else if (tilt < 15) {
+            effectText = 'Con esta inclinación reducida, las estaciones serían mucho más suaves, con menos diferencia entre verano e invierno.';
+        } else if (tilt < 30) {
+            effectText = 'Con una inclinación cercana a los 23.5° actuales, tenemos estaciones bien definidas en las zonas templadas y períodos extendidos de luz/oscuridad en las zonas polares.';
+        } else if (tilt < 40) {
+            effectText = 'Con una inclinación tan pronunciada, las estaciones serían dramáticamente extremas, con posibles períodos de varios meses de oscuridad total en algunas regiones.';
+        } else {
+effectText = 'Con una inclinación tan pronunciada, las estaciones serían dramáticamente extremas, con posibles períodos de varios meses de oscuridad total en algunas regiones.';
+
+           
+        }
+        
+        tiltEffect.innerHTML = `
+            <strong>Efecto climático:</strong> ${effectText}<br>
+        `;
+    }
+
+    // Inicialización
+    document.addEventListener('DOMContentLoaded', () => {
+        initGlobe();
+        tiltSlider.addEventListener('input', updateTilt);
+        updateTilt(); // Actualizar inicialmente
+    });
+</script>
 </body>
 </html>
