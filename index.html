@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Modelo Astronómico Interactivo</title>
     <style>
         * {
@@ -16,6 +16,14 @@
             background-color: #0a1128;
             color: #ffffff;
             line-height: 1.6;
+            font-size: 16px;
+        }
+
+        /* Para dispositivos más pequeños */
+        @media (max-width: 480px) {
+            body {
+                font-size: 14px;
+            }
         }
         
         header {
@@ -24,6 +32,33 @@
             text-align: center;
             position: relative;
             overflow: hidden;
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-container {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .logo-placeholder {
+            font-size: 0.8rem;
+            color: #ffd700;
+            text-align: center;
+            padding: 0.5rem;
         }
 
         .stars {
@@ -36,65 +71,112 @@
         }
         
         .title {
-            font-size: 1.8rem;
-            margin: 1rem 0;
+            font-size: 1.5rem;
+            margin: 0.5rem 0;
             color: #ffffff;
             position: relative;
             z-index: 1;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
+
+        @media (min-width: 480px) {
+            .title {
+                font-size: 1.8rem;
+            }
+        }
         
         .subtitle {
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: #ffd700;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
             position: relative;
             z-index: 1;
         }
+
+        @media (min-width: 480px) {
+            .subtitle {
+                font-size: 1.2rem;
+            }
+        }
         
         main {
-            padding: 1rem;
+            padding: 0.75rem;
             max-width: 1200px;
             margin: 0 auto;
+        }
+
+        @media (min-width: 768px) {
+            main {
+                padding: 1.5rem;
+            }
         }
         
         .section {
             background-color: #1c2951;
             border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (min-width: 768px) {
+            .section {
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+            }
         }
         
         h2 {
             color: #ffd700;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
             border-bottom: 2px solid #3a5da8;
             padding-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        @media (min-width: 768px) {
+            h2 {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
         }
         
         p {
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        @media (min-width: 768px) {
+            p {
+                margin-bottom: 1rem;
+            }
         }
         
         .grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 1.5rem;
-            margin: 1.5rem 0;
+            gap: 1rem;
+            margin: 1rem 0;
         }
         
-        @media (min-width: 768px) {
+        @media (min-width: 600px) {
             .grid {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+                margin: 1.5rem 0;
             }
         }
         
         .card {
             background-color: #233567;
             border-radius: 8px;
-            padding: 1.5rem;
+            padding: 1rem;
             transition: transform 0.3s;
+        }
+
+        @media (min-width: 768px) {
+            .card {
+                padding: 1.5rem;
+            }
         }
         
         .card:hover {
@@ -103,13 +185,27 @@
         
         .card h3 {
             color: #ffd700;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        @media (min-width: 768px) {
+            .card h3 {
+                margin-bottom: 1rem;
+                font-size: 1.2rem;
+            }
         }
         
         .simulation-container {
             width: 100%;
-            margin: 2rem auto;
+            margin: 1rem auto;
             text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .simulation-container {
+                margin: 2rem auto;
+            }
         }
         
         .iframe-container {
@@ -117,9 +213,22 @@
             overflow: hidden;
             width: 100%;
             padding-top: 75%; /* 4:3 Aspect Ratio */
-            margin: 1.5rem auto;
+            margin: 1rem auto;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (min-width: 768px) {
+            .iframe-container {
+                padding-top: 65%; /* Ajustar para pantallas más grandes */
+                margin: 1.5rem auto;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .iframe-container {
+                padding-top: 56.25%; /* 16:9 para pantallas aún más grandes */
+            }
         }
         
         .responsive-iframe {
@@ -136,37 +245,75 @@
         .season-guide {
             background-color: #233567;
             border-radius: 8px;
-            padding: 1.5rem;
-            margin-top: 1.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .season-guide {
+                padding: 1.5rem;
+                margin-top: 1.5rem;
+            }
         }
         
         .season-guide h3 {
             color: #ffd700;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        @media (min-width: 768px) {
+            .season-guide h3 {
+                margin-bottom: 1rem;
+                font-size: 1.2rem;
+            }
         }
         
         .season-guide-tips {
-            margin-top: 1rem;
+            margin-top: 0.75rem;
             font-style: italic;
             color: #aabcf1;
+            font-size: 0.9rem;
+        }
+
+        @media (min-width: 768px) {
+            .season-guide-tips {
+                margin-top: 1rem;
+                font-size: 1rem;
+            }
         }
         
         .controls {
-            margin: 1rem auto;
+            margin: 0.75rem auto;
             display: flex;
             justify-content: center;
-            gap: 1rem;
+            gap: 0.5rem;
             flex-wrap: wrap;
+        }
+
+        @media (min-width: 768px) {
+            .controls {
+                margin: 1rem auto;
+                gap: 1rem;
+            }
         }
         
         button {
             background-color: #3a5da8;
             color: white;
             border: none;
-            padding: 0.75rem 1.5rem;
+            padding: 0.5rem 1rem;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
+            font-size: 0.9rem;
+        }
+
+        @media (min-width: 768px) {
+            button {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+            }
         }
         
         button:hover {
@@ -174,44 +321,131 @@
         }
         
         .tilt-container {
-            margin: 2rem auto;
+            margin: 1rem auto;
             text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .tilt-container {
+                margin: 2rem auto;
+            }
         }
         
         .tilt-slider {
             width: 100%;
-            max-width: 300px;
-            margin: 1rem auto;
+            max-width: 250px;
+            margin: 0.75rem auto;
+            -webkit-appearance: none;
+            height: 10px;
+            border-radius: 5px;
+            background: #233567;
+            outline: none;
+        }
+
+        .tilt-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ffd700;
+            cursor: pointer;
+        }
+
+        @media (min-width: 768px) {
+            .tilt-slider {
+                max-width: 300px;
+                margin: 1rem auto;
+            }
         }
         
         #tilt-value {
             margin-top: 0.5rem;
             font-weight: bold;
             color: #ffd700;
+            font-size: 0.9rem;
+        }
+
+        @media (min-width: 768px) {
+            #tilt-value {
+                font-size: 1rem;
+            }
+        }
+
+        #tilt-effect {
+            font-size: 0.9rem;
+        }
+
+        @media (min-width: 768px) {
+            #tilt-effect {
+                font-size: 1rem;
+            }
         }
         
         .resource {
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
             border-bottom: 1px solid #3a5da8;
+        }
+
+        @media (min-width: 768px) {
+            .resource {
+                margin-bottom: 1rem;
+                padding-bottom: 1rem;
+            }
+        }
+
+        .resource-link {
+            display: block;
+            color: #7cb9ff;
+            text-decoration: none;
+            margin-top: 0.5rem;
+            word-break: break-word;
+            transition: color 0.3s;
+        }
+
+        .resource-link:hover {
+            color: #ffd700;
         }
         
         footer {
             background-color: #0c1938;
             text-align: center;
-            padding: 2rem 1rem;
-            margin-top: 2rem;
+            padding: 1.5rem 1rem;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        @media (min-width: 768px) {
+            footer {
+                padding: 2rem 1rem;
+                margin-top: 2rem;
+                font-size: 1rem;
+            }
         }
         
         .quiz-container {
             background-color: #233567;
             border-radius: 8px;
-            padding: 1.5rem;
-            margin-top: 2rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .quiz-container {
+                padding: 1.5rem;
+                margin-top: 2rem;
+            }
         }
         
         .quiz-question {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .quiz-question {
+                margin-bottom: 1.5rem;
+            }
         }
         
         .quiz-options {
@@ -225,6 +459,13 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
+            font-size: 0.9rem;
+        }
+
+        @media (min-width: 768px) {
+            .quiz-option {
+                font-size: 1rem;
+            }
         }
         
         .quiz-option:hover {
@@ -251,14 +492,42 @@
             margin-top: 1rem;
             font-weight: bold;
             color: #ffd700;
+            font-size: 0.9rem;
+        }
+
+        @media (min-width: 768px) {
+            #quiz-result {
+                font-size: 1rem;
+            }
+        }
+
+        ul {
+            margin-left: 1.2rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        @media (min-width: 768px) {
+            ul {
+                margin-left: 1.5rem;
+                margin-bottom: 1rem;
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
     <header>
         <div class="stars" id="stars"></div>
-        <h1 class="title">MODELO ASTRONÓMICO INTERACTIVO</h1>
-        <p class="subtitle">Explora las estaciones de la Tierra: Inclinación, Rotación y Traslación</p>
+        <div class="header-content">
+            <div class="logo-container">
+    <img src="LogoUmes.png" alt="Logo de la Universidad" style="max-width: 100%; max-height: 100%;">
+</div>
+
+            </div>
+            <h1 class="title">MODELO ASTRONÓMICO INTERACTIVO</h1>
+            <p class="subtitle">Explora las estaciones de la Tierra: Inclinación, Rotación y Traslación</p>
+        </div>
     </header>
     
     <main>
@@ -300,7 +569,7 @@
             <div class="season-guide">
                 <h3>Guía para usar la simulación</h3>
                 <p>Esta simulación interactiva de Earth Space Lab te permite:</p>
-                <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                <ul>
                     <li>Ver la posición de la Tierra en diferentes momentos del año</li>
                     <li>Observar cómo los rayos solares inciden en distintas partes del planeta</li>
                     <li>Comprender cómo la inclinación del eje terrestre afecta a la distribución de luz solar</li>
@@ -349,18 +618,21 @@
         <section class="section">
             <h2>Recursos Educativos</h2>
             <div class="resource">
-                <h3>Las Estaciones a Simple Vista</h3>
-                <p>Un experimento sencillo para entender las estaciones es usar una linterna y un globo terráqueo. Inclina el globo a 23.5° y muévelo alrededor de la linterna para observar cómo cambia la iluminación.</p>
+                <h3>Estaciones del año y temporadas climáticas</h3>
+                <p>Un artículo detallado de la Universidad Veracruzana que explica la relación entre las estaciones astronómicas y las temporadas climáticas.</p>
+                <a href="https://www.uv.mx/cienciauv/blog/estacionesdelanoytemporadasclimaticas/" class="resource-link" target="_blank">UV - Estaciones del año y temporadas climáticas</a>
             </div>
             
             <div class="resource">
-                <h3>Videos Recomendados</h3>
-                <p>Encontrarás excelentes visualizaciones del movimiento terrestre y su efecto en las estaciones en canales educativos como National Geographic, NASA Kids y Academias de Ciencias online.</p>
+                <h3>Manual de Ciencias Naturales</h3>
+                <p>Material educativo completo sobre los movimientos de la Tierra y cómo estos afectan a las estaciones del año.</p>
+                <a href="https://elbibliote.com/libro-pedia/manual_csnaturales/3grado/capitulo10/pdf/3.10.2.pdf" class="resource-link" target="_blank">Manual de Ciencias Naturales - Capítulo 10</a>
             </div>
             
             <div class="resource">
-                <h3>Artículos Relacionados</h3>
-                <p>Para profundizar más en el tema, te recomendamos buscar artículos sobre "precesión de los equinoccios", "ciclos de Milankovitch" y "cambios históricos en las estaciones".</p>
+                <h3>La Tierra en movimiento</h3>
+                <p>Artículo de la UNAM que explica los diferentes movimientos de nuestro planeta y su influencia en los ciclos naturales.</p>
+                <a href="https://www.gaceta.unam.mx/la-tierra-en-movimiento/" class="resource-link" target="_blank">UNAM - La Tierra en movimiento</a>
             </div>
         </section>
         
@@ -412,11 +684,15 @@
         // Animación de estrellas en el encabezado
         function createStars() {
             const stars = document.getElementById('stars');
-            const count = 100;
+            const count = 50; // Menos estrellas para dispositivos móviles
             
-            for (let i = 0; i < count; i++) {
+            // Detecta si es un dispositivo móvil
+            const isMobile = window.innerWidth < 768;
+            const starCount = isMobile ? 50 : 100;
+            
+            for (let i = 0; i < starCount; i++) {
                 const star = document.createElement('div');
-                const size = Math.random() * 2;
+                const size = Math.random() * (isMobile ? 1.5 : 2);
                 
                 star.style.position = 'absolute';
                 star.style.width = `${size}px`;
@@ -507,6 +783,16 @@
             updateTilt();
             
             submitQuiz.addEventListener('click', checkQuiz);
+            
+            // Ajusta el tamaño para dispositivos móviles
+            function adjustForMobile() {
+                const isMobile = window.innerWidth < 768;
+                document.body.classList.toggle('mobile', isMobile);
+            }
+            
+            // Ejecutar al cargar y cuando cambie el tamaño de la pantalla
+            adjustForMobile();
+            window.addEventListener('resize', adjustForMobile);
         });
     </script>
 </body>
