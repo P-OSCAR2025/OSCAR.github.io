@@ -101,6 +101,7 @@
             height: 100%;
             z-index: 0;
         }
+
         
         .title {
             font-size: 1.5rem;
@@ -892,6 +893,175 @@ footer {
             0% { transform: scale(1); opacity: 1; }
             100% { transform: scale(50); opacity: 0; }
         }
+
+  /* ... (estilos anteriores se mantienen igual) ... */
+
+        /* Nuevos estilos para el modal de autores */
+        .autores-link {
+            color: #ffd700;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-top: 1rem;
+            display: inline-block;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        /* Nuevos estilos para el modal de autores */
+        .autores-link {
+            color: #ffd700;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-top: 1rem;
+            display: inline-block;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+          .modal-content {
+        background: #1c2951;
+        padding: 2.5rem; /* Aumentado de 2rem */
+        border-radius: 15px; /* Bordes más redondeados */
+        text-align: center;
+        position: relative;
+        max-width: 350px; /* Aumentado de 300px */
+        min-width: 400	px; /* Ancho mínimo agregado */
+        box-shadow: 0 0 25px rgba(255, 215, 0, 0.4); /* Sombra más pronunciada */
+    }
+
+        .autores-lista {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+
+        .autores-lista li {
+            margin: 1rem 0;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #ffd700;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+.university-info a {
+    transition: all 0.3s ease;
+    text-decoration: none;
+    position: relative;
+}
+
+.university-info a:hover {
+    color: #ffd700 !important;
+    text-decoration: underline;
+}
+
+.university-info a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #ffd700;
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+}
+
+.university-info a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+
+
+  /* Estilos para el modal de recompensa */
+    .reward-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .reward-content {
+        background: #1c2951;
+        padding: 2rem;
+        border-radius: 10px;
+        text-align: center;
+        max-width: 400px;
+        position: relative;
+    }
+
+    .wallpaper-preview {
+        width: 100%;
+        height: 600px;
+        background-size: cover;
+        background-position: center;
+        margin: 1rem 0;
+        border-radius: 8px;
+        border: 2px solid #ffd700;
+    }
+
+    .download-btn {
+        background: #3a5da8;
+        color: white;
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 1rem;
+        transition: all 0.3s;
+    }
+
+    .download-btn:hover {
+        background: #4a6db8;
+        transform: translateY(-2px);
+    }
+
+    #try-again {
+        margin-top: 1rem;
+        display: none;
+    }
+
+
     </style>
 
 </head>
@@ -1106,56 +1276,269 @@ footer {
         </section>
         
         <section class="section">
-            <h2>Pon a prueba tus conocimientos</h2>
-            <div class="quiz-container">
-                <div class="quiz-question" id="question-1">
-                    <p>1. ¿Cuál es la inclinación aproximada del eje terrestre?</p>
-                    <div class="quiz-options">
-                        <div class="quiz-option" data-correct="false">15.5 grados</div>
-                        <div class="quiz-option" data-correct="true">23.5 grados</div>
-                        <div class="quiz-option" data-correct="false">30 grados</div>
-                        <div class="quiz-option" data-correct="false">45 grados</div>
-                    </div>
-                </div>
-                
-                <div class="quiz-question" id="question-2">
-                    <p>2. ¿Qué ocurre durante un solsticio de verano en el hemisferio norte?</p>
-                    <div class="quiz-options">
-                        <div class="quiz-option" data-correct="false">El día y la noche tienen la misma duración</div>
-                        <div class="quiz-option" data-correct="false">La Tierra está más cerca del Sol</div>
-                        <div class="quiz-option" data-correct="true">Es el día más largo del año</div>
-                        <div class="quiz-option" data-correct="false">Es el día más corto del año</div>
-                    </div>
-                </div>
-                
-                <div class="quiz-question" id="question-3">
-                    <p>3. ¿Por qué hace más calor en verano que en invierno?</p>
-                    <div class="quiz-options">
-                        <div class="quiz-option" data-correct="false">Porque la Tierra está más cerca del Sol</div>
-                        <div class="quiz-option" data-correct="true">Porque los rayos solares inciden más directamente y durante más horas</div>
-                        <div class="quiz-option" data-correct="false">Porque el Sol produce más energía en esa época</div>
-                        <div class="quiz-option" data-correct="false">Porque la atmósfera es más delgada en verano</div>
-                    </div>
-                </div>
-                
-                <button id="submit-quiz">Comprobar respuestas</button>
-                <div id="quiz-result"></div>
-            </div>
+           <h2>Pon a prueba tus conocimientos</h2>
+    <div class="quiz-container">
+        <div id="quiz-questions"></div>
+        <button id="submit-quiz">Comprobar respuestas</button>
+        <button id="try-again">Intentar de nuevo</button>
+        <div id="quiz-result"></div>
+    </div>
         </section>
+
+<div class="reward-modal" id="rewardModal">
+    <div class="reward-content">
+        <button class="close-btn" onclick="closeReward()">&times;</button>
+        <h3>¡Felicidades! 🎉</h3>
+        <p>Has ganado un fondo de pantalla exclusivo:</p>
+        <div class="wallpaper-preview" id="wallpaperPreview"></div>
+        <a id="downloadLink" class="download-btn" download>
+            Descargar Wallpaper
+        </a>
+    </div>
+</div>
+
+<script>
+    // Banco de preguntas
+    const questionPool = [
+        {
+            question: "¿Cuál es la inclinación aproximada del eje terrestre?",
+            options: [
+                {text: "15.5 grados", correct: false},
+                {text: "23.5 grados", correct: true},
+                {text: "30 grados", correct: false},
+                {text: "45 grados", correct: false}
+            ]
+        },
+        {
+            question: "¿Qué ocurre durante un solsticio de verano en el hemisferio norte?",
+            options: [
+                {text: "El día y la noche tienen la misma duración", correct: false},
+                {text: "Es el día más largo del año", correct: true},
+                {text: "La Tierra está más cerca del Sol", correct: false},
+                {text: "Es el día más corto del año", correct: false}
+            ]
+        },
+        {
+            question: "¿Por qué hace más calor en verano que en invierno?",
+            options: [
+                {text: "Porque la Tierra está más cerca del Sol", correct: false},
+                {text: "Porque los rayos solares inciden más directamente", correct: true},
+                {text: "Porque el Sol produce más energía", correct: false},
+                {text: "Porque la atmósfera es más delgada", correct: false}
+            ]
+        },
+        {
+            question: "¿Cada cuánto tiempo la Tierra completa su órbita alrededor del Sol?",
+            options: [
+                {text: "24 horas", correct: false},
+                {text: "28 días", correct: false},
+                {text: "365.25 días", correct: true},
+                {text: "12 meses", correct: false}
+            ]
+        },
+        {
+            question: "¿Qué causa las diferencias de temperatura entre estaciones?",
+            options: [
+                {text: "La distancia variable entre la Tierra y el Sol", correct: false},
+                {text: "La inclinación del eje terrestre", correct: true},
+                {text: "La velocidad de rotación terrestre", correct: false},
+                {text: "Las mareas oceánicas", correct: false}
+            ]
+        }
+    ];
+
+    // Wallpapers locales (base64 de ejemplo - reemplazar con tus imágenes)
+    const wallpapers = [
+        {
+            name: "Galaxia",
+            data: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCACWAMgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD3+iiigD//2Q=="
+        },
+        {
+            name: "Nebulosa",
+            data: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+        },
+        {
+            name: "Estrellas",
+            data: "data:image/webp;base64,UklGRlIAAABXRUJQVlA4TEYAAAAvH8AHED+gqG2jyfZsfEPU8ccgY5umadq2bdu2bdu2bdu2bds2YvwDexMRkf8H8D8hIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiI+J8A8D8Nc4qkqyIAAAAASUVORK5CYII="
+        }
+    ];
+
+    let currentQuestions = [];
+    let selectedWallpaper = null;
+
+    function initializeQuiz() {
+        // Seleccionar 3 preguntas aleatorias
+        currentQuestions = [];
+        const pool = [...questionPool];
+        while(currentQuestions.length < 3 && pool.length > 0) {
+            const randomIndex = Math.floor(Math.random() * pool.length);
+            currentQuestions.push(pool.splice(randomIndex, 1)[0]);
+        }
+        
+        // Mostrar preguntas
+        const container = document.getElementById('quiz-questions');
+        container.innerHTML = '';
+        currentQuestions.forEach((q, index) => {
+            const questionHTML = `
+                <div class="quiz-question">
+                    <p>${index + 1}. ${q.question}</p>
+                    <div class="quiz-options">
+                        ${q.options.map(opt => `
+                            <div class="quiz-option" data-correct="${opt.correct}">
+                                ${opt.text}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            container.innerHTML += questionHTML;
+        });
+
+        // Reiniciar estado
+        document.getElementById('quiz-result').textContent = '';
+        document.getElementById('try-again').style.display = 'none';
+        document.getElementById('submit-quiz').disabled = false;
+        document.querySelectorAll('.quiz-option').forEach(opt => {
+            opt.classList.remove('selected', 'correct', 'incorrect');
+            opt.addEventListener('click', selectAnswer);
+        });
+    }
+
+    function selectAnswer() {
+        const parent = this.parentElement;
+        parent.querySelectorAll('.quiz-option').forEach(opt => {
+            opt.classList.remove('selected');
+        });
+        this.classList.add('selected');
+    }
+
+    function checkQuiz() {
+        let correctAnswers = 0;
+        currentQuestions.forEach((q, index) => {
+            const questionElement = document.querySelectorAll('.quiz-question')[index];
+            const selected = questionElement.querySelector('.selected');
+            
+            if(selected) {
+                const isCorrect = selected.dataset.correct === 'true';
+                selected.classList.add(isCorrect ? 'correct' : 'incorrect');
+                if(isCorrect) correctAnswers++;
+                
+                // Mostrar respuestas correctas
+                if(!isCorrect) {
+                    questionElement.querySelectorAll('.quiz-option').forEach(opt => {
+                        if(opt.dataset.correct === 'true') {
+                            opt.classList.add('correct');
+                        }
+                    });
+                }
+            }
+        });
+
+        const resultElement = document.getElementById('quiz-result');
+        if(correctAnswers === currentQuestions.length) {
+            resultElement.innerHTML = '¡Perfecto! Todas correctas 🎉<br>¡Ganaste una recompensa especial!';
+            showReward();
+        } else {
+            resultElement.textContent = `Correctas: ${correctAnswers}/${currentQuestions.length}. ¡Inténtalo de nuevo!`;
+        }
+
+        document.getElementById('submit-quiz').disabled = true;
+        document.getElementById('try-again').style.display = 'block';
+    }
+
+     function showReward() {
+        const randomWallpaper = wallpapers[Math.floor(Math.random() * wallpapers.length)];
+        
+        // Configurar vista previa
+        const preview = document.getElementById('wallpaperPreview');
+        preview.style.backgroundImage = `url(${randomWallpaper.data})`;
+        
+        // Configurar descarga
+        const downloadLink = document.getElementById('downloadLink');
+        downloadLink.href = randomWallpaper.data;
+        downloadLink.download = `${randomWallpaper.name}.${getFileExtension(randomWallpaper.data)}`;
+        
+        // Mostrar modal
+        document.getElementById('rewardModal').style.display = 'flex';
+    }
+
+    function getFileExtension(dataUrl) {
+        return dataUrl.match(/[^:]\w+\/[\w-+\d.]+(?=;|,)/)[0].split('/')[1];
+    }
+
+    function closeReward() {
+        document.getElementById('rewardModal').style.display = 'none';
+    }
+
+    // Event Listeners
+    document.getElementById('submit-quiz').addEventListener('click', checkQuiz);
+    document.getElementById('try-again').addEventListener('click', initializeQuiz);
+
+    // Inicializar primer quiz
+    initializeQuiz();
+
+    // Cerrar modal con ESC
+    document.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape') closeReward();
+    });
+</script>
     </main>
     
-    <footer>
-      <div class="footer-content">
-        <div class="footer-logo-container">
-            <img src="LogoUmes.png" alt="Logo Universidad">
-        </div>
-        <div class="university-info">
-    <p>UNIVERSIDAD MESOAMERICANA 2025</p>
-            <p>Modelo Astronómico Interactivo - Proyecto OSCAR</p>
-            <p>"El espacio es vasto, misterioso e infinito, como nuestro potencial"</p>
+     <footer>
+        <div class="footer-content">
+            <div class="footer-logo-container">
+                <img src="LogoUmes.png" alt="Logo Universidad">
+            </div>
+<div class="university-info">
+    <p><a href="https://www.umes.edu.gt/" target="_blank" style="color: #ffffff; text-decoration: none;">UNIVERSIDAD MESOAMERICANA 2025</a></p>
+    <p>Modelo Astronómico Interactivo - Proyecto OSCAR</p>
+    <p>"El espacio es vasto, misterioso e infinito, como nuestro potencial"</p>
+</div>
+                    </div>
+    </footer>
+
+ <div class="modal-overlay" id="autoresModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeModal">&times;</button>
+            <h3>Autores</h3>
+            <ul class="autores-lista">
+                <li>Mario Rene Bac Paredes</li>
+                <li>Emilio Andres Rodriguez Rodas</li>
+                <li>Rene Blanco Serrano</li>
+                <li>Humberto Jorge Luis Velasquez Velasquez</li>
+            </ul>
         </div>
     </div>
-    </footer>
+
+ <script>
+        // ... (scripts anteriores se mantienen igual) ...
+
+        // Script para el modal de autores
+        const autoresLink = document.getElementById('verAutores');
+        const autoresModal = document.getElementById('autoresModal');
+        const closeModal = document.getElementById('closeModal');
+
+        autoresLink.addEventListener('click', () => {
+            autoresModal.style.display = 'flex';
+        });
+
+        closeModal.addEventListener('click', () => {
+            autoresModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === autoresModal) {
+                autoresModal.style.display = 'none';
+            }
+        });
+
+        // Cerrar modal con tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && autoresModal.style.display === 'flex') {
+                autoresModal.style.display = 'none';
+            }
+        });
+    </script>
 
     <script>
         // Animación de estrellas en el encabezado
